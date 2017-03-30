@@ -4,11 +4,13 @@ Rails.application.routes.draw do
   get('/contact', {to: 'contact#index' })
   post('/contact', {to: 'contact#create', as: 'contact_submit' })
 
-  # (HTTP Verb: delete - path: /questions/:id ) ==> questions controller / destroy action
-  #
-  # delete '/questions/:id', to: 'questions#destroy', as: 'question_deletion'
 
-  
+  # delete '/questions/:id', to: 'questions#destroy', as: 'question_deletion'
+  # get '/questions/:id/edit', to: 'questions#edit', as 'question_edit'
+  # get '/questions/:id', to: 'questions#show', as 'question_show'
+  # post '/questions/:id/comments', to: 'comment#create', as 'comments'
+  # get '/faq', to: 'home#faq', as: 'faq'
 
   root 'welcome#index'
+
 end
