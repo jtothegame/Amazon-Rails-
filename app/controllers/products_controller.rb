@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
   end
 
   def create
-    product_params = params.require(:product).permit([:title, :description, :price])
+    product_params = params.require(:product).permit([:title, :description, :price, :category_id])
     @product = Product.new product_params
     if @product.save
       redirect_to @product
@@ -16,10 +16,11 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find params[:id]
+    @review = Review.new
   end
 
   def index
-    @products = Product.offset(20).limit(20)
+    @products = Product.last(20)
   end
 
   def destroy
@@ -30,7 +31,7 @@ class ProductsController < ApplicationController
 
   def update
     @product = Product.find params[:id]
-    product_params = params.require(:product).permit([:title, :description, :price])
+    product_params = params.require(:product).permit([:title, :description, :price, :category_id])
     if @product.update(product_params)
       redirect_to product_path(@product)
     else

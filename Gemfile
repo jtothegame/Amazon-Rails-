@@ -37,10 +37,11 @@ gem 'cowsay', '~> 0.3'
 
 gem 'colorize', '~> 0.8.1'
 
-gem 'faker'
+gem 'faker', github: 'stympy/faker'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'rspec-rails'
   gem 'byebug', platform: :mri
 end
 

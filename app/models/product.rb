@@ -1,4 +1,7 @@
 class Product < ApplicationRecord
+  belongs_to :category
+  has_many :reviews
+
   validates(:title, { presence: { message: 'must be present!' }, uniqueness: true })
   validates(:description,{ presence: true, length: { minimum: 10 } })
   validates(:price, { presence: true, numericality: { greater_than_or_equal_to: 0 }})
