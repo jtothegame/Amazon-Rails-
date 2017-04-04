@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   # post('/products', { to: 'products#create', as: 'products' })
   end
 
+  resources :users, only: [:new, :create]
+
   root 'welcome#index'
 
 end
