@@ -5,6 +5,11 @@
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+    <style>
+    body {
+      margin: 20px;
+    }
+    </style>
   </head>
 
   <body>
@@ -15,13 +20,25 @@
     <%= link_to "Contact Us", contact_path %>
     |
     <%= link_to "All Products", products_path %>
+
+    <% if user_signed_in? %>
+      |
+      <span>Hello <%= current_user.first_name %>, </span>
+      <%= link_to "Logout", sessions_path, method: :delete, data: { confirm: 'For Real Dawg?' } %>
+    <% else %>
     |
     <%= link_to "Sign Up", new_user_path %>
     |
     <%= link_to "Login", new_session_path %>
-    |
-    <%= link_to "Logout", sessions_path, method: :delete, data: { confirm: 'For Real Dawg?' } %>
+    <% end %>
     <hr>
+
+    <% if flash[:notice] %>
+      <div class="alert alert-success"><%= flash[:notice] %></div>
+    <% elsif flash[:alert] %>
+      <div class="alert alert-danger"><%= flash[:alert] %></div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

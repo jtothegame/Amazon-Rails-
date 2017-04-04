@@ -9,8 +9,10 @@ class UsersController < ApplicationController
 
     if @user.save
       session[:user_id] = @user.id
+      flash[:notice] = "User Created and Signed in!"
       redirect_to products_path
     else
+      flash[:alert] = "Something Went Horribly Awry!"
       render :new
     end
   end
