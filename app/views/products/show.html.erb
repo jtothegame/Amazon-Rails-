@@ -2,6 +2,7 @@
 <p><strong>Category: </strong><%= @product.category&.name %></p>
 <p>Description: <%= @product.description %></p>
 <p>Price: $<%= sprintf('%.2f', (@product.price)) %></p>
+<p>Created By: <%= @product.user.first_name %></p>
 
 <%= link_to 'New Product', new_product_path  %> |
 
