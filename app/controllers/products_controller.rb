@@ -28,22 +28,29 @@ class ProductsController < ApplicationController
 
   def destroy
     product = Product.find params[:id]
-    product.destroy
-    redirect_to products_path
+    if can? :destroy, @product
+      @product.destroy
+      redirect_to products_path, notice: 'Product Deleted'
+    else
+      redirect_to root_path, alert: 'Access Denied'
+    end
   end
 
   def update
     @product = Product.find params[:id]
     product_params = params.require(:product).permit([:title, :description, :price, :category_id])
-    if @product.update(product_params)
-      redirect_to product_path(@product)
+
+    if !(can? :edit, @product)
+      redirect_to root_path, alert: 'access denied'
+    elsif @product.update(product_params)
+      redirect_to product_path(@product), notice: 'Product updated'
     else
       render :edit
     end
   end
 
   def edit
-    @product = Product.find params[:id]
+    redirect_to root_path, alert: 'access denied' unless can? :edit, @product
   end
 
   private
@@ -54,5 +61,5 @@ class ProductsController < ApplicationController
 
   def product_params
     params.require(:product).permit([:title, :description, :price, :category_id])
-  end  
+  end
 end

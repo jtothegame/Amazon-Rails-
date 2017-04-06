@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   get('/about', {to: 'about#index' })
+  get('/dashboard', {to: 'admin/dashboard#index' })
   get('/contact', {to: 'contact#index' })
   post('/contact', {to: 'contact#create', as: 'contact_submit' })
 

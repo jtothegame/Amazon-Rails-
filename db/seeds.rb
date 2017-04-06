@@ -2,28 +2,44 @@
   Category.create(name: category)
 end
 
-category = Category.all.sample
-
-100.times do
-  Product.create  title: Faker::Superhero.name,
-                  description: Faker::RickAndMorty.quote,
-                  price: rand(1000),
-                  category_id: category.id
-
+# Create users
+20.times do
+  User.create(first_name: Faker::Name.first_name,
+              last_name: Faker::Name.last_name,
+              email: Faker::Internet.email,
+              password: '12345678',
+              password_confirmation: '12345678'
+  )
+  puts "Product created!"
 end
+puts Cowsay.say 'Created 100 user', :beavis
 
-products = Product.all
 
-products.each do |q|
-  rand(0..10).times do
-    q.reviews.create({
-        body: Faker::Hipster.paragraph,
-        rating: rand(1..5)
-      })
+# Create Products
+100.times do
+  category = Category.all.sample
+  user = User.all.sample
+
+  p = Product.create(title: Faker::Hacker.say_something_smart,
+                     description: Faker::Hipster.paragraph,
+                     price: rand(100),
+                     category_id: category.id,
+                     user_id: user.id
+  )
+  puts "Product created!"
+end
+puts Cowsay.say 'Created 100 products', :cow
+
+# Create Reviews
+Product.all.each do |product|
+  5.times do
+    user = User.all.sample
+
+    product.reviews.create(rating: rand(6),
+                           body: Faker::Hipster.paragraph,
+                           user_id: user.id
+    )
+    puts "Review created!"
   end
 end
-
-reviews_count = Review.count
-
-puts Cowsay.say 'Created 100 Products', :dragon
-puts Cowsay.say "Created #{reviews_count} reviews", :ghostbusters
+puts Cowsay.say 'Created lots of reviews', :cow
