@@ -12,6 +12,15 @@ class Ability
         can :manage, :all
       end
 
+      # define abilities to prevent users from liking their own questions
+      can :like, Review do |r|
+        user != r.user
+      end
+
+      cannot :like, Review do |r|
+        user == r.user
+      end
+
       # in this example we're saying that the user can edit a question if the user is the owner(creator) of that question.
       can [:edit, :destroy], Product do |product|
         product.user == user

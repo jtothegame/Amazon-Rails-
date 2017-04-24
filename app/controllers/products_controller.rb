@@ -1,17 +1,18 @@
 class ProductsController < ApplicationController
   before_action :find_product, only: [:show, :edit, :update, :destroy]
-  # before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show]
 
   def new
     @product = Product.new
   end
 
   def create
-    product_params = params.require(:product).permit([:title, :description, :price, :category_id])
     @product = Product.new product_params
     @product.user = current_user
     if @product.save
-      redirect_to @product
+
+      ProductMailer.notify_product_owner(@product).deliver_now
+      redirect_to product_path(@product)
     else
       render :new
     end
@@ -20,6 +21,7 @@ class ProductsController < ApplicationController
   def show
     @product = Product.find params[:id]
     @review = Review.new
+    @review.product = @product
   end
 
   def index
@@ -60,6 +62,6 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit([:title, :description, :price, :category_id])
+    params.require(:product).permit([:title, :description, :price, :category_id, { tag_ids: [] } ])
   end
 end

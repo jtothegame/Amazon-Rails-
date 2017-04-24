@@ -2,6 +2,9 @@ class Product < ApplicationRecord
   belongs_to :category
   belongs_to :user
   has_many :reviews, dependent: :destroy
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
+
 
   validates(:title, { presence: { message: 'must be present!' }, uniqueness: true })
   validates(:description,{ presence: true, length: { minimum: 10 } })

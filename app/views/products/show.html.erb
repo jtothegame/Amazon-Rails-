@@ -3,6 +3,7 @@
 <p>Description: <%= @product.description %></p>
 <p>Price: $<%= sprintf('%.2f', (@product.price)) %></p>
 <p>Created By: <%= @product.user.first_name %></p>
+<p>Tags: <%= @product.tags.pluck(:name).join(', ') %></p>
 
 <%= link_to 'New Product', new_product_path  %> |
 
@@ -28,6 +29,19 @@
   <div style= 'border: 3px solid green; padding: 5px; margin: 5px;'
   <p><strong>Review: </strong><%= review.body %></p>
   <p><strong>Rating: </strong><%= review.rating %> out of 5 Stars</p>
+
+  <% like = review.likes.find_by_user_id(current_user ) %>
+
+  <% if user_signed_in? && can?(:like, review) %>
+    <% if like.present? %>
+      <%= link_to fa_icon("heart"), product_review_like_path(@product, review, like), method: :delete %>
+    <% else %>
+      <%= link_to fa_icon("heart-o"), product_review_likes_path(@product, review), method: :post %>
+    <% end %>
+  <% end %>
+
+
+  <span><%= pluralize(review.likes.count, 'like') %></span>
 
 
   <%= link_to(
